@@ -3,21 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เกม AR จำแนกสัญลักษณ์ผังงาน</title>
+    <title>เกม AR คลังสัญลักษณ์ผังงาน (สเปกเบาพิเศษ)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
-
+    
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
     <style>
         body { background-color: #060913; overflow: hidden; user-select: none; font-family: 'Sarabun', sans-serif; }
         .font-mono { font-family: 'Chakra Petch', monospace; }
-        .opt-btn { transition: all .15s ease; border: 2px solid transparent; }
-        .opt-btn.active-slow { border-color: #10b981; background: rgba(16,185,129,0.15); }
-        .opt-btn.active-medium { border-color: #f59e0b; background: rgba(245,158,11,0.15); }
-        .opt-btn.active-hard { border-color: #ef4444; background: rgba(239,68,68,0.15); }
-        .opt-btn.active-duration { border-color: #f59e0b; background: rgba(245,158,11,0.15); }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col">
@@ -29,8 +24,8 @@
             playPop() {
                 try {
                     this.init(); const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
-                    osc.type = 'sine'; osc.frequency.setValueAtTime(400, this.ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(1500, this.ctx.currentTime + 0.1);
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(450, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1600, this.ctx.currentTime + 0.1);
                     gain.gain.setValueAtTime(0.15, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
                     osc.connect(gain); gain.connect(this.ctx.destination); osc.start(); osc.stop(this.ctx.currentTime + 0.1);
                 } catch(e) {}
@@ -38,128 +33,116 @@
             playFail() {
                 try {
                     this.init(); const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
-                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, this.ctx.currentTime);
-                    gain.gain.setValueAtTime(0.1, this.ctx.currentTime); gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.25);
+                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.12, this.ctx.currentTime); gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.25);
                     osc.connect(gain); gain.connect(this.ctx.destination); osc.start(); osc.stop(this.ctx.currentTime + 0.25);
-                } catch(e) {}
-            },
-            playEnd() {
-                try {
-                    this.init(); const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
-                    osc.type = 'triangle'; osc.frequency.setValueAtTime(600, this.ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(200, this.ctx.currentTime + 0.4);
-                    gain.gain.setValueAtTime(0.15, this.ctx.currentTime); gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.4);
-                    osc.connect(gain); gain.connect(this.ctx.destination); osc.start(); osc.stop(this.ctx.currentTime + 0.4);
                 } catch(e) {}
             }
         };
     </script>
 
-    <!-- ============ INTRO / SETTINGS SCREEN ============ -->
-    <div id="screen-intro" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md overflow-y-auto">
-        <div class="max-w-xl w-full text-center space-y-6 p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl my-6">
-            <span class="text-6xl block">🎯</span>
-            <h1 class="text-3xl font-black font-mono tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-indigo-400">
+    <div id="screen-intro" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 bg-slate-950/95 backdrop-blur-md">
+        <div class="max-w-2xl w-full text-center space-y-6 p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl overflow-y-auto max-h-[95vh]">
+            <span class="text-5xl block animate-bounce">🎯</span>
+            <h1 class="text-3xl font-black font-mono bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-emerald-400">
                 AR เกมยิงสัญลักษณ์ผังงาน
             </h1>
-            <p class="text-slate-400 text-xs leading-relaxed">
-                ฝึกจำรูปทรงและหน้าที่ของสัญลักษณ์ Flowchart! ระบบจะสั่งให้ค้นหาประเภทสัญลักษณ์ <br>ให้นักเรียน **ใช้นิ้วชี้เล็งค้างไว้** บนรูปทรงที่ถูกต้องให้ระเบิดเพื่อสะสมคะแนน
-            </p>
+            <p class="text-slate-400 text-xs">เวอร์ชันลดสเปกคอมพิวเตอร์ เน้นดูรูปทรงสัญลักษณ์ล้วนๆ ไม่มีตัวอักษรบอกใบ้บนเป้า!</p>
+            
+            <div class="border-t border-slate-800 pt-4 space-y-5 text-left max-w-md mx-auto">
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">1. เลือกระดับความเร็ว (ความยาก)</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setDifficulty('easy')" id="btn-diff-easy" class="py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-emerald-500 text-emerald-400">🐢 ช้ามาก</button>
+                        <button onclick="setDifficulty('medium')" id="btn-diff-medium" class="py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-transparent">⚡ ปานกลาง</button>
+                        <button onclick="setDifficulty('hard')" id="btn-diff-hard" class="py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-transparent">🔥 ยากมาก</button>
+                    </div>
+                </div>
 
-            <div class="text-left pt-2">
-                <p class="text-sm font-bold text-slate-300 mb-2">1. เลือกระดับความเร็ว (ความยาก)</p>
-                <div class="grid grid-cols-3 gap-3">
-                    <button data-diff="slow" onclick="selectDifficulty('slow')" class="opt-btn diff-btn p-3 bg-slate-800 rounded-xl text-sm font-bold">🐢 ช้ามาก</button>
-                    <button data-diff="medium" onclick="selectDifficulty('medium')" class="opt-btn diff-btn p-3 bg-slate-800 rounded-xl text-sm font-bold">⚡ ปานกลาง</button>
-                    <button data-diff="hard" onclick="selectDifficulty('hard')" class="opt-btn diff-btn p-3 bg-slate-800 rounded-xl text-sm font-bold">🔥 ยากมาก</button>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">2. เลือกเวลาเล่นเกม</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setGameTime(30)" id="btn-time-30" class="py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-transparent">30 วิ</button>
+                        <button onclick="setGameTime(60)" id="btn-time-60" class="py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-amber-500 text-amber-400">60 วิ</button>
+                        <button onclick="setGameTime(90)" id="btn-time-90" class="py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-transparent">90 วิ</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="text-left pt-2">
-                <p class="text-sm font-bold text-slate-300 mb-2">2. เลือกเวลาเล่นเกม</p>
-                <div class="grid grid-cols-3 gap-3">
-                    <button data-dur="30" onclick="selectDuration(30)" class="opt-btn dur-btn p-3 bg-slate-800 rounded-xl text-sm font-bold">30 วิ</button>
-                    <button data-dur="60" onclick="selectDuration(60)" class="opt-btn dur-btn p-3 bg-slate-800 rounded-xl text-sm font-bold">60 วิ</button>
-                    <button data-dur="90" onclick="selectDuration(90)" class="opt-btn dur-btn p-3 bg-slate-800 rounded-xl text-sm font-bold">90 วิ</button>
-                </div>
-            </div>
-
-            <div class="border-t border-slate-800 pt-5 text-left">
-                <p class="text-sm font-bold text-slate-300 mb-2 text-center">3. เลือกโหมดควบคุมเพื่อเริ่มเล่น</p>
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="selectMode('ar')" class="p-3.5 bg-indigo-600 hover:bg-indigo-500 font-bold rounded-xl shadow-lg transition-all text-sm">
-                        🤖 เปิดกล้อง<br><span class="text-[10px] font-normal opacity-80">(ใช้นิ้วชี้เล็งบนจอ)</span>
+            <div class="border-t border-slate-800 pt-5 space-y-3">
+                <label class="text-xs font-bold text-slate-300 block">3. เลือกโหมดควบคุมเพื่อเริ่มเล่น</label>
+                <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+                    <button onclick="startGame('ar')" class="p-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 font-bold rounded-2xl shadow-xl transition-all text-sm flex flex-col items-center justify-center gap-1">
+                        <span>🤖 เปิดกล้อง </span>
+                        <span class="text-[10px] opacity-70 font-normal">(ใช้นิ้วชี้เล็งบนจอ)</span>
                     </button>
-                    <button onclick="selectMode('mouse')" class="p-3.5 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl transition-all text-sm">
-                        🖱️ ใช้เมาส์เล่น<br><span class="text-[10px] font-normal opacity-80">(ขับเมาส์เล็ง)</span>
+                    <button onclick="startGame('mouse')" class="p-4 bg-slate-800 hover:bg-slate-700 font-bold rounded-2xl transition-all text-sm flex flex-col items-center justify-center gap-1">
+                        <span>🖱️ ใช้เมาส์เล่น</span>
+                        <span class="text-[10px] opacity-70 font-normal">(ขยับ เมาส์เล็ง)</span>
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============ END / SUMMARY SCREEN ============ -->
-    <div id="screen-end" class="fixed inset-0 z-50 hidden flex-col items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
-        <div class="max-w-md w-full text-center space-y-5 p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl">
-            <span class="text-6xl block">🏁</span>
-            <h2 class="text-2xl font-black font-mono text-slate-100">หมดเวลา!</h2>
-            <p class="text-slate-400 text-sm">คะแนนที่ทำได้</p>
-            <p id="final-score" class="text-5xl font-black text-emerald-400 font-mono">0</p>
-            <div class="grid grid-cols-2 gap-4 pt-2">
-                <button onclick="restartSameSettings()" class="p-3 bg-indigo-600 hover:bg-indigo-500 font-bold rounded-xl text-sm">🔁 เล่นอีกครั้ง</button>
-                <button onclick="backToMenu()" class="p-3 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl text-sm">☰ เลือกใหม่</button>
             </div>
         </div>
     </div>
 
     <div class="flex-1 flex flex-col h-screen max-h-screen overflow-hidden">
-        <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between z-10 gap-4">
-            <div class="min-w-0">
-                <span class="text-[10px] uppercase font-mono tracking-widest text-indigo-400 font-bold block">🎯 TARGET OBJECTIVE</span>
-                <h1 class="text-xl md:text-2xl font-mono font-black text-slate-100 truncate">
-                    จงยิงสัญลักษณ์: <span id="target-instruction" class="text-amber-400">...</span>
+        <header class="bg-slate-900 border-b border-slate-800 px-6 py-3 flex items-center justify-between z-10">
+            <div class="flex-1">
+                <span class="text-[10px] uppercase font-mono tracking-widest text-indigo-400 font-bold block">TARGET OBJECTIVE</span>
+                <h1 class="text-lg md:text-2xl font-black text-slate-100">
+                    จงยิง: <span id="target-instruction" class="text-amber-400">...</span>
                 </h1>
             </div>
-            <div class="flex items-center gap-3 shrink-0">
-                <div class="bg-slate-950 border border-slate-800 px-4 py-2 rounded-2xl font-mono text-right">
-                    <span class="text-xs text-slate-400 block uppercase">Time</span>
-                    <span id="timer-text" class="font-black text-2xl text-cyan-400">60</span>
+            
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-950 border border-slate-800 px-4 py-1.5 rounded-xl font-mono text-center min-w-[80px]">
+                    <span class="text-[10px] text-slate-500 block uppercase">Time Left</span>
+                    <span id="timer-text" class="font-black text-xl text-amber-500">60</span>
                 </div>
-                <div class="bg-slate-950 border border-slate-800 px-5 py-2 rounded-2xl font-mono text-right">
-                    <span class="text-xs text-slate-400 block uppercase">Score</span>
-                    <span id="score-text" class="font-black text-2xl text-emerald-400">0</span>
+                <div class="bg-slate-950 border border-slate-800 px-5 py-1.5 rounded-xl font-mono text-center min-w-[90px]">
+                    <span class="text-[10px] text-slate-500 block uppercase">Score</span>
+                    <span id="score-text" class="font-black text-xl text-emerald-400">0</span>
                 </div>
-                <button onclick="exitToMenu()" class="bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-4 py-3 rounded-2xl transition-all">✕ ออก</button>
+                <button onclick="exitGame()" class="bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-4 py-3 rounded-xl transition-all">✕ ออก</button>
             </div>
         </header>
 
         <div class="flex-1 relative bg-slate-950 flex items-center justify-center">
             <video id="webcam" class="hidden" autoplay playsinline muted></video>
             <canvas id="game-canvas" class="w-full h-full max-w-full max-h-full aspect-[4/3] bg-transparent z-10"></canvas>
+            
+            <div id="game-over-box" class="hidden absolute inset-0 bg-slate-950/90 z-20 flex flex-col items-center justify-center p-4">
+                <div class="text-center space-y-5 bg-slate-900 border border-slate-800 p-8 rounded-3xl max-w-sm w-full shadow-2xl">
+                    <h2 class="text-3xl font-black font-mono text-amber-400">⏱️ หมดเวลาแล้ว!</h2>
+                    <p class="text-slate-400 text-sm">คะแนนรวมที่คุณครูหรือนักเรียนทำได้</p>
+                    <div class="text-5xl font-black text-emerald-400 font-mono py-2 bg-slate-950/50 rounded-2xl border border-slate-800" id="final-score">0</div>
+                    <button onclick="location.reload()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 font-bold rounded-xl transition-all">🔄 เล่นใหม่อีกครั้ง</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         const SYMBOL_TYPES = [
-            { name: "Terminator (เริ่มต้น/สิ้นสุด)", shape: "terminator", color: "#10b981", bg: "rgba(16,185,129,0.15)" },
-            { name: "Process (ประมวลผล/การกระทำ)", shape: "process", color: "#3b82f6", bg: "rgba(59,130,246,0.15)" },
-            { name: "Decision (การตัดสินใจ/เงื่อนไข)", shape: "decision", color: "#f59e0b", bg: "rgba(245,158,11,0.15)" }
+            { name: "เริ่มต้นและสิ้นสุด", shape: "terminator", color: "#fbbf24", bg: "rgba(251,191,36,0.2)" }, // เหลืองส้ม
+            { name: "ลูกศรแสดงทิศทาง", shape: "flowline", color: "#ffffff", bg: "rgba(255,255,255,0.05)" }, // ขาว
+            { name: "ปฏิบัติงาน", shape: "process", color: "#10b981", bg: "rgba(16,185,129,0.2)" }, // เขียว
+            { name: "รับข้อมูล", shape: "input", color: "#f472b6", bg: "rgba(244,114,182,0.2)" }, // ชมพูม่วง
+            { name: "แสดงผลทางจอภาพ", shape: "display", color: "#0ea5e9", bg: "rgba(14,165,233,0.2)" }, // ฟ้า
+            { name: "การตัดสินใจ", shape: "decision", color: "#8b5cf6", bg: "rgba(139,92,246,0.2)" }, // ม่วง
+            { name: "จุดเชื่อมต่อของผังงาน", shape: "connector", color: "#ef4444", bg: "rgba(239,68,68,0.25)" } // แดง
         ];
 
-        const DIFFICULTY_CONFIG = {
-            slow:   { spawnInterval: 90, vyMin: 1.2, vyRange: 1.0 },
-            medium: { spawnInterval: 60, vyMin: 2.0, vyRange: 2.5 },
-            hard:   { spawnInterval: 35, vyMin: 3.2, vyRange: 3.2 }
-        };
-
-        let selectedDifficulty = 'slow';
-        let selectedDuration = 60;
+        let speedConfig = { min: -0.8, max: -1.6, spawnRate: 75 };
+        let gameDuration = 60;
+        let timeLeft = 60;
+        let isPlaying = false;
+        let timerInterval = null;
 
         let currentTarget = null;
         let score = 0;
         let controlMode = 'mouse';
-        let gameActive = false;
-
+        
         let canvas = document.getElementById("game-canvas");
         let ctx = canvas.getContext("2d");
         let canvasWidth = 800;
@@ -167,104 +150,71 @@
 
         let cursor = { x: 400, y: 300 };
         let smoothedCursor = { x: 400, y: 300 };
-        let lastHandSeenAt = 0;
         let floatingItems = [];
         let particles = [];
         let spawnTimer = 0;
         let animationFrameId = null;
 
-        let timeLeft = 60;
-        let timerIntervalId = null;
-
-        // ---------- Intro screen option selection ----------
-        function selectDifficulty(key) {
-            selectedDifficulty = key;
-            document.querySelectorAll('.diff-btn').forEach(btn => {
-                btn.classList.remove('active-slow', 'active-medium', 'active-hard');
-                if (btn.dataset.diff === key) btn.classList.add('active-' + key);
+        function setDifficulty(level) {
+            ['easy', 'medium', 'hard'].forEach(l => {
+                document.getElementById(`btn-diff-${l}`).className = "py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-transparent";
             });
+            const btn = document.getElementById(`btn-diff-${level}`);
+            if(level === 'easy') {
+                speedConfig = { min: -0.8, max: -1.6, spawnRate: 75 };
+                btn.className = "py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-emerald-500 text-emerald-400";
+            } else if(level === 'medium') {
+                speedConfig = { min: -2.0, max: -3.2, spawnRate: 55 };
+                btn.className = "py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-blue-500 text-blue-400";
+            } else if(level === 'hard') {
+                speedConfig = { min: -3.5, max: -5.5, spawnRate: 40 };
+                btn.className = "py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-red-500 text-red-400";
+            }
+            AudioSynth.playPop();
         }
 
-        function selectDuration(sec) {
-            selectedDuration = sec;
-            document.querySelectorAll('.dur-btn').forEach(btn => {
-                btn.classList.remove('active-duration');
-                if (parseInt(btn.dataset.dur, 10) === sec) btn.classList.add('active-duration');
+        function setGameTime(seconds) {
+            [30, 60, 90].forEach(s => {
+                document.getElementById(`btn-time-${s}`).className = "py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-transparent";
             });
+            gameDuration = seconds;
+            timeLeft = seconds;
+            document.getElementById(`btn-time-${seconds}`).className = "py-2 px-3 rounded-xl bg-slate-800 text-sm font-bold border border-amber-500 text-amber-400";
+            document.getElementById("timer-text").innerText = timeLeft;
+            AudioSynth.playPop();
         }
 
-        // Set sensible defaults highlighted on load
-        window.addEventListener('DOMContentLoaded', () => {
-            selectDifficulty('slow');
-            selectDuration(60);
-        });
-
-        // ---------- Game flow ----------
-        function selectMode(mode) {
+        function startGame(mode) {
             controlMode = mode;
+            isPlaying = true;
             AudioSynth.playPop();
             document.getElementById("screen-intro").style.display = 'none';
-            document.getElementById("screen-end").style.display = 'none';
-            document.getElementById("screen-end").classList.add('hidden');
-            startGame();
-            if (mode === 'ar') {
-                initAR();
-            }
-            if (!animationFrameId) {
-                renderLoop();
-            }
-        }
-
-        function startGame() {
-            score = 0;
-            floatingItems = [];
-            particles = [];
-            spawnTimer = 0;
-            timeLeft = selectedDuration;
-            gameActive = true;
-            document.getElementById("score-text").innerText = score;
-            document.getElementById("timer-text").innerText = timeLeft;
+            
             pickRandomTarget();
-
-            if (timerIntervalId) clearInterval(timerIntervalId);
-            timerIntervalId = setInterval(() => {
-                if (!gameActive) return;
+            
+            document.getElementById("timer-text").innerText = timeLeft;
+            timerInterval = setInterval(() => {
+                if(!isPlaying) return;
                 timeLeft--;
-                document.getElementById("timer-text").innerText = Math.max(0, timeLeft);
-                if (timeLeft <= 0) {
-                    endGame();
-                }
+                document.getElementById("timer-text").innerText = timeLeft;
+                if(timeLeft <= 0) endGame();
             }, 1000);
+
+            if (mode === 'ar') initAR();
+            if (!animationFrameId) renderLoop();
         }
 
         function endGame() {
-            gameActive = false;
-            if (timerIntervalId) { clearInterval(timerIntervalId); timerIntervalId = null; }
-            AudioSynth.playEnd();
+            isPlaying = false;
+            clearInterval(timerInterval);
             document.getElementById("final-score").innerText = score;
-            document.getElementById("screen-end").style.display = 'flex';
-            document.getElementById("screen-end").classList.remove('hidden');
+            document.getElementById("game-over-box").classList.remove("hidden");
         }
 
-        function restartSameSettings() {
-            AudioSynth.playPop();
-            document.getElementById("screen-end").style.display = 'none';
-            document.getElementById("screen-end").classList.add('hidden');
-            startGame();
-        }
-
-        function backToMenu() {
-            gameActive = false;
-            if (timerIntervalId) { clearInterval(timerIntervalId); timerIntervalId = null; }
-            floatingItems = [];
-            particles = [];
-            document.getElementById("screen-end").style.display = 'none';
-            document.getElementById("screen-end").classList.add('hidden');
-            document.getElementById("screen-intro").style.display = 'flex';
-        }
-
-        function exitToMenu() {
-            backToMenu();
+        function exitGame() {
+            if (confirm("ออกจากเกมและกลับไปหน้าเลือกโหมดใช่ไหมคะ?")) {
+                location.reload();
+            }
         }
 
         function pickRandomTarget() {
@@ -273,14 +223,16 @@
         }
 
         function spawnSymbol() {
-            const cfg = DIFFICULTY_CONFIG[selectedDifficulty] || DIFFICULTY_CONFIG.medium;
+            if(!isPlaying) return;
             const type = SYMBOL_TYPES[Math.floor(Math.random() * SYMBOL_TYPES.length)];
+            const vy = speedConfig.min + Math.random() * (speedConfig.max - speedConfig.min);
+            
             floatingItems.push({
                 x: 120 + Math.random() * (canvasWidth - 240),
                 y: canvasHeight + 60,
-                vy: -(cfg.vyMin + Math.random() * cfg.vyRange),
+                vy: vy,
                 type: type,
-                radius: 55,
+                radius: 50,
                 lockProgress: 0
             });
         }
@@ -288,7 +240,6 @@
         function renderLoop() {
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-            // Background Video/Color
             const webcam = document.getElementById("webcam");
             if (controlMode === 'ar' && webcam.readyState >= 2) {
                 ctx.save(); ctx.scale(-1, 1); ctx.translate(-canvasWidth, 0);
@@ -296,28 +247,27 @@
                 ctx.restore();
             } else {
                 ctx.fillStyle = "#090d1a"; ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-                ctx.strokeStyle = "rgba(30, 41, 59, 0.3)"; ctx.lineWidth = 1;
+                ctx.strokeStyle = "rgba(30, 41, 59, 0.2)"; ctx.lineWidth = 1;
                 for (let x = 0; x < canvasWidth; x += 50) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvasHeight); ctx.stroke(); }
                 for (let y = 0; y < canvasHeight; y += 50) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvasWidth, y); ctx.stroke(); }
             }
 
-            if (gameActive) {
-                const cfg = DIFFICULTY_CONFIG[selectedDifficulty] || DIFFICULTY_CONFIG.medium;
+            if(isPlaying) {
                 spawnTimer++;
-                if (spawnTimer > cfg.spawnInterval) { spawnSymbol(); spawnTimer = 0; }
+                if (spawnTimer > speedConfig.spawnRate) { spawnSymbol(); spawnTimer = 0; }
             }
 
-            // Items Update
+            // Cards Logic
             for (let i = floatingItems.length - 1; i >= 0; i--) {
                 let item = floatingItems[i];
-                item.y += item.vy;
+                if(isPlaying) item.y += item.vy;
 
                 let dx = item.x - smoothedCursor.x;
                 let dy = item.y - smoothedCursor.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
 
-                if (gameActive && dist < item.radius) {
-                    item.lockProgress += 0.05;
+                if (isPlaying && dist < item.radius) {
+                    item.lockProgress += 0.07; // ล็อกเป้าเร็วขึ้นเล็กน้อยในโหมดลดสเปกเพื่อความฉับไว
                     if (item.lockProgress >= 1) {
                         floatingItems.splice(i, 1);
                         if (currentTarget && item.type.shape === currentTarget.shape) {
@@ -334,47 +284,79 @@
                         continue;
                     }
                 } else {
-                    item.lockProgress = Math.max(0, item.lockProgress - 0.025);
+                    item.lockProgress = Math.max(0, item.lockProgress - 0.035);
                 }
 
-                if (item.y < -70) { floatingItems.splice(i, 1); continue; }
+                if (item.y < -80) { floatingItems.splice(i, 1); continue; }
 
-                // DRAW SHAPES
+                // DRAW EXACT SHAPES ONLY (NO TEXT INSIDE)
                 ctx.save();
                 ctx.strokeStyle = item.type.color;
                 ctx.fillStyle = item.type.bg;
-                ctx.lineWidth = 3.5;
+                ctx.lineWidth = 4;
 
                 if (item.type.shape === "terminator") {
-                    drawRoundedRect(ctx, item.x - 50, item.y - 25, 100, 50, 25);
-                } else if (item.type.shape === "decision") {
+                    drawRoundedRect(ctx, item.x - 55, item.y - 22, 110, 44, 22);
+                } 
+                else if (item.type.shape === "flowline") {
+                    ctx.fillStyle = "rgba(255,255,255,0.1)";
+                    drawRoundedRect(ctx, item.x - 30, item.y - 30, 60, 60, 8);
+                    ctx.fill();
+                    ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 3;
+                    ctx.beginPath(); ctx.moveTo(item.x - 15, item.y); ctx.lineTo(item.x + 15, item.y); 
+                    ctx.lineTo(item.x + 7, item.y - 5); ctx.moveTo(item.x + 15, item.y); ctx.lineTo(item.x + 7, item.y + 5);
+                    ctx.stroke();
+                } 
+                else if (item.type.shape === "process") {
+                    ctx.rect(item.x - 55, item.y - 25, 110, 50);
+                } 
+                else if (item.type.shape === "input") {
+                    ctx.beginPath();
+                    ctx.moveTo(item.x - 35, item.y - 22);
+                    ctx.lineTo(item.x + 55, item.y - 22);
+                    ctx.lineTo(item.x + 35, item.y + 22);
+                    ctx.lineTo(item.x - 55, item.y + 22);
+                    ctx.closePath();
+                } 
+                else if (item.type.shape === "display") {
+                    ctx.beginPath();
+                    ctx.moveTo(item.x - 55, item.y);
+                    ctx.lineTo(item.x - 25, item.y - 25);
+                    ctx.lineTo(item.x + 45, item.y - 25);
+                    ctx.quadraticCurveTo(item.x + 55, item.y - 25, item.x + 55, item.y);
+                    ctx.quadraticCurveTo(item.x + 55, item.y + 25, item.x + 45, item.y + 25);
+                    ctx.lineTo(item.x - 25, item.y + 25);
+                    ctx.closePath();
+                } 
+                else if (item.type.shape === "decision") {
                     ctx.beginPath();
                     ctx.moveTo(item.x, item.y - 35);
                     ctx.lineTo(item.x + 50, item.y);
                     ctx.lineTo(item.x, item.y + 35);
                     ctx.lineTo(item.x - 50, item.y);
                     ctx.closePath();
-                } else {
-                    drawRoundedRect(ctx, item.x - 50, item.y - 25, 100, 50, 6);
+                } 
+                else if (item.type.shape === "connector") {
+                    ctx.beginPath();
+                    ctx.arc(item.x, item.y, 25, 0, Math.PI * 2);
                 }
-                ctx.fill(); ctx.stroke();
+                
+                if(item.type.shape !== "flowline") ctx.fill();
+                ctx.stroke();
 
+                // Lock-on ring indicator
                 if (item.lockProgress > 0) {
                     ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 4;
                     ctx.beginPath();
-                    ctx.arc(item.x, item.y, item.radius + 5, -Math.PI/2, (-Math.PI/2) + (Math.PI * 2 * item.lockProgress));
+                    ctx.arc(item.x, item.y, item.radius + 4, -Math.PI/2, (-Math.PI/2) + (Math.PI * 2 * item.lockProgress));
                     ctx.stroke();
                 }
-
-                ctx.fillStyle = "#ffffff"; ctx.font = "bold 11px sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-                let tag = item.type.shape === "terminator" ? "Terminator" : (item.type.shape === "decision" ? "Decision" : "Process");
-                ctx.fillText(tag, item.x, item.y);
                 ctx.restore();
             }
 
             // Particles
             for (let i = particles.length - 1; i >= 0; i--) {
-                let p = particles[i]; p.x += p.vx; p.y += p.vy; p.alpha -= 0.025;
+                let p = particles[i]; p.x += p.vx; p.y += p.vy; p.alpha -= 0.03;
                 if (p.alpha <= 0) { particles.splice(i, 1); continue; }
                 ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha;
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
@@ -384,31 +366,19 @@
             smoothedCursor.x += (cursor.x - smoothedCursor.x) * 0.35;
             smoothedCursor.y += (cursor.y - smoothedCursor.y) * 0.35;
 
-            // Debug status text (helps diagnose hand tracking issues)
-            if (controlMode === 'ar') {
-                ctx.save();
-                ctx.font = "bold 16px sans-serif";
-                ctx.textAlign = "left";
-                ctx.textBaseline = "top";
-                const handOk = (performance.now() - lastHandSeenAt) < 1200;
-                ctx.fillStyle = handOk ? "#10b981" : "#ef4444";
-                ctx.fillText(handOk ? "✅ เจอมือ" : "❌ ไม่เจอมือ (ยกมือให้เต็มเฟรม)", 16, 16);
-                ctx.restore();
-            }
-
-            // Crosshair
+            // Reticle Target
             ctx.strokeStyle = "#ef4444"; ctx.lineWidth = 2;
             ctx.beginPath(); ctx.arc(smoothedCursor.x, smoothedCursor.y, 10, 0, Math.PI*2); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(smoothedCursor.x - 15, smoothedCursor.y); ctx.lineTo(smoothedCursor.x + 15, smoothedCursor.y); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(smoothedCursor.x, smoothedCursor.y - 15); ctx.lineTo(smoothedCursor.x, smoothedCursor.y + 15); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(smoothedCursor.x - 14, smoothedCursor.y); ctx.lineTo(smoothedCursor.x + 14, smoothedCursor.y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(smoothedCursor.x, smoothedCursor.y - 14); ctx.lineTo(smoothedCursor.x, smoothedCursor.y + 14); ctx.stroke();
 
             animationFrameId = requestAnimationFrame(renderLoop);
         }
 
         function createExplosion(x, y, color) {
-            for (let i = 0; i < 12; i++) {
-                let angle = Math.random() * Math.PI * 2; let speed = 2 + Math.random() * 4;
-                particles.push({ x: x, y: y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed, r: 2+Math.random()*3, color: color, alpha: 1 });
+            for (let i = 0; i < 10; i++) {
+                let angle = Math.random() * Math.PI * 2; let speed = 2 + Math.random() * 3;
+                particles.push({ x: x, y: y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed, r: 2+Math.random()*2, color: color, alpha: 1 });
             }
         }
 
@@ -428,60 +398,35 @@
 
         function initAR() {
             if (!window.isSecureContext) {
-                alert("โหมดกล้อง (AR) ต้องเปิดผ่านลิงก์ที่เป็น HTTPS เท่านั้น\n\nหน้านี้ถูกเปิดแบบไม่ปลอดภัย (เช่น ไฟล์ที่ดาวน์โหลดมาเปิดตรงๆ หรือหน้า Preview ของ Google Drive) เบราว์เซอร์จะปิดกั้นกล้องเสมอ\n\nกรุณานำไฟล์ไปฝากไว้บนโฮสติ้งที่เป็น HTTPS (เช่น Netlify, GitHub Pages) แล้วเปิดผ่านลิงก์นั้นแทน หรือใช้โหมด 'ใช้เมาส์เล่น' แทนได้เลย");
-                backToMenu();
+                alert("โหมดกล้อง (AR) ต้องเปิดผ่านลิงก์ที่เป็น HTTPS เท่านั้น กรุณาเปิดผ่านลิงก์เว็บที่โฮสต์ไว้ (เช่น GitHub Pages) แทนการเปิดไฟล์ตรงๆ");
+                location.reload();
                 return;
             }
             const webcam = document.getElementById("webcam");
             const hands = new Hands({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}` });
-            hands.setOptions({ maxNumHands: 1, modelComplexity: 0, minDetectionConfidence: 0.4, minTrackingConfidence: 0.4 });
+            
+            // CRITICAL LITE SETTINGS FOR PERFORMANCE (ตั้งค่าตรวจจับแบบลดสเปกพิเศษ)
+            hands.setOptions({ 
+                maxNumHands: 1, 
+                modelComplexity: 0, // สเปกต่ำสุด ไม่กินพลังเครื่อง
+                minDetectionConfidence: 0.55, 
+                minTrackingConfidence: 0.55 
+            });
+            
             hands.onResults(results => {
                 if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                     const indexFingerTip = results.multiHandLandmarks[0][8];
                     cursor.x = (1 - indexFingerTip.x) * canvasWidth;
                     cursor.y = indexFingerTip.y * canvasHeight;
-                    lastHandSeenAt = performance.now();
-                    arModelWorking = true;
                 }
             });
-
-            let arModelWorking = false;
-            const arStartTime = performance.now();
-            const arWatchdog = setInterval(() => {
-                if (arModelWorking) { clearInterval(arWatchdog); return; }
-                if (performance.now() - arStartTime > 6000) {
-                    clearInterval(arWatchdog);
-                    if (!arModelWorking) {
-                        alert("ระบบตรวจจับมือโหลดไม่สำเร็จบนอุปกรณ์นี้ (มือถือ/เบราว์เซอร์บางรุ่นรองรับไม่ได้)\n\nกรุณาลองใหม่อีกครั้ง หรือลองเปิดด้วยคอมพิวเตอร์/โน้ตบุ๊กแทน หรือสลับไปใช้โหมด 'ใช้เมาส์เล่น' ไปก่อนได้เลยครับ");
-                        backToMenu();
-                    }
-                }
-            }, 1000);
-
-            const camera = new Camera(webcam, {
-                onFrame: async () => {
-                    try {
-                        await hands.send({ image: webcam });
-                    } catch (e) {
-                        clearInterval(arWatchdog);
-                        alert("เกิดข้อผิดพลาดระหว่างประมวลผลกล้อง: " + (e && e.message ? e.message : e) + "\n\nกรุณาลองใหม่ หรือใช้โหมดเมาส์แทนครับ");
-                        backToMenu();
-                    }
-                },
-                width: 480,
-                height: 360
-            });
+            const camera = new Camera(webcam, { onFrame: async () => { await hands.send({ image: webcam }); }, width: 640, height: 480 });
             camera.start().catch(err => {
-                clearInterval(arWatchdog);
-                alert("ไม่สามารถเปิดกล้องได้ กรุณาตรวจสอบการอนุญาตสิทธิ์กล้องบนเบราว์เซอร์");
+                alert("ไม่สามารถเข้าถึงกล้องเว็บแคมได้ กรุณาตรวจสอบสิทธิ์เปิดกล้อง");
             });
         }
 
         canvas.width = canvasWidth; canvas.height = canvasHeight;
-
-        // Initialize default selections immediately in case DOMContentLoaded already fired
-        selectDifficulty('slow');
-        selectDuration(60);
     </script>
 </body>
 </html>
