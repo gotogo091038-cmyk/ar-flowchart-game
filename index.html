@@ -167,6 +167,7 @@
 
         let cursor = { x: 400, y: 300 };
         let smoothedCursor = { x: 400, y: 300 };
+        let lastHandSeenAt = 0;
         let floatingItems = [];
         let particles = [];
         let spawnTimer = 0;
@@ -383,6 +384,18 @@
             smoothedCursor.x += (cursor.x - smoothedCursor.x) * 0.35;
             smoothedCursor.y += (cursor.y - smoothedCursor.y) * 0.35;
 
+            // Debug status text (helps diagnose hand tracking issues)
+            if (controlMode === 'ar') {
+                ctx.save();
+                ctx.font = "bold 16px sans-serif";
+                ctx.textAlign = "left";
+                ctx.textBaseline = "top";
+                const handOk = (performance.now() - lastHandSeenAt) < 400;
+                ctx.fillStyle = handOk ? "#10b981" : "#ef4444";
+                ctx.fillText(handOk ? "✅ เจอมือ" : "❌ ไม่เจอมือ (ยกมือให้เต็มเฟรม)", 16, 16);
+                ctx.restore();
+            }
+
             // Crosshair
             ctx.strokeStyle = "#ef4444"; ctx.lineWidth = 2;
             ctx.beginPath(); ctx.arc(smoothedCursor.x, smoothedCursor.y, 10, 0, Math.PI*2); ctx.stroke();
@@ -421,12 +434,13 @@
             }
             const webcam = document.getElementById("webcam");
             const hands = new Hands({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}` });
-            hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.6, minTrackingConfidence: 0.6 });
+            hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.4, minTrackingConfidence: 0.4 });
             hands.onResults(results => {
                 if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                     const indexFingerTip = results.multiHandLandmarks[0][8];
                     cursor.x = (1 - indexFingerTip.x) * canvasWidth;
                     cursor.y = indexFingerTip.y * canvasHeight;
+                    lastHandSeenAt = performance.now();
                 }
             });
             const camera = new Camera(webcam, { onFrame: async () => { await hands.send({ image: webcam }); }, width: 640, height: 480 });
