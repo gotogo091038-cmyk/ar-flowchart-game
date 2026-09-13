@@ -390,7 +390,7 @@
                 ctx.font = "bold 16px sans-serif";
                 ctx.textAlign = "left";
                 ctx.textBaseline = "top";
-                const handOk = (performance.now() - lastHandSeenAt) < 400;
+                const handOk = (performance.now() - lastHandSeenAt) < 1200;
                 ctx.fillStyle = handOk ? "#10b981" : "#ef4444";
                 ctx.fillText(handOk ? "✅ เจอมือ" : "❌ ไม่เจอมือ (ยกมือให้เต็มเฟรม)", 16, 16);
                 ctx.restore();
@@ -434,17 +434,45 @@
             }
             const webcam = document.getElementById("webcam");
             const hands = new Hands({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}` });
-            hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.4, minTrackingConfidence: 0.4 });
+            hands.setOptions({ maxNumHands: 1, modelComplexity: 0, minDetectionConfidence: 0.4, minTrackingConfidence: 0.4 });
             hands.onResults(results => {
                 if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                     const indexFingerTip = results.multiHandLandmarks[0][8];
                     cursor.x = (1 - indexFingerTip.x) * canvasWidth;
                     cursor.y = indexFingerTip.y * canvasHeight;
                     lastHandSeenAt = performance.now();
+                    arModelWorking = true;
                 }
             });
-            const camera = new Camera(webcam, { onFrame: async () => { await hands.send({ image: webcam }); }, width: 640, height: 480 });
+
+            let arModelWorking = false;
+            const arStartTime = performance.now();
+            const arWatchdog = setInterval(() => {
+                if (arModelWorking) { clearInterval(arWatchdog); return; }
+                if (performance.now() - arStartTime > 6000) {
+                    clearInterval(arWatchdog);
+                    if (!arModelWorking) {
+                        alert("ระบบตรวจจับมือโหลดไม่สำเร็จบนอุปกรณ์นี้ (มือถือ/เบราว์เซอร์บางรุ่นรองรับไม่ได้)\n\nกรุณาลองใหม่อีกครั้ง หรือลองเปิดด้วยคอมพิวเตอร์/โน้ตบุ๊กแทน หรือสลับไปใช้โหมด 'ใช้เมาส์เล่น' ไปก่อนได้เลยครับ");
+                        backToMenu();
+                    }
+                }
+            }, 1000);
+
+            const camera = new Camera(webcam, {
+                onFrame: async () => {
+                    try {
+                        await hands.send({ image: webcam });
+                    } catch (e) {
+                        clearInterval(arWatchdog);
+                        alert("เกิดข้อผิดพลาดระหว่างประมวลผลกล้อง: " + (e && e.message ? e.message : e) + "\n\nกรุณาลองใหม่ หรือใช้โหมดเมาส์แทนครับ");
+                        backToMenu();
+                    }
+                },
+                width: 480,
+                height: 360
+            });
             camera.start().catch(err => {
+                clearInterval(arWatchdog);
                 alert("ไม่สามารถเปิดกล้องได้ กรุณาตรวจสอบการอนุญาตสิทธิ์กล้องบนเบราว์เซอร์");
             });
         }
